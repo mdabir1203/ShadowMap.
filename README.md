@@ -1,4 +1,4 @@
-# 🌑 ShadowMap  
+# 🌑 ShadowMap.
 
 ⚡ **Hacker-grade reconnaissance at global scale.**  
 ShadowMap is a Rust-powered open-source framework for **subdomain enumeration, vulnerability detection, and attack surface mapping**.  
