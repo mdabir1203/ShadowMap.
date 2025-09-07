@@ -1,0 +1,2 @@
+subdomain,http_status,server_header,open_ports,cors_issues,fingerprints,takeover_risks
+example.com,200,,,,,

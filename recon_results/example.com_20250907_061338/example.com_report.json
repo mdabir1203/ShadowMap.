@@ -1,0 +1,10 @@
+{
+  "example.com": {
+    "cors_issues": [],
+    "fingerprints": {},
+    "http_status": 200,
+    "open_ports": [],
+    "server_header": null,
+    "takeover_risks": []
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "323232323323232d.atlassian.net": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "AtlassianEdge",
+      "via": "1.1 11dc6914a8e5eaad14ab3972522bb472.cloudfront.net (CloudFront)"
+    },
+    "http_status": 404,
+    "open_ports": [],
+    "server_header": "AtlassianEdge",
+    "takeover_risks": []
+  },
+  "atlassian.net": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "CloudFront",
+      "via": "1.1 9ee8b835a4cdf0b35993615e21a3b5f8.cloudfront.net (CloudFront)"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "CloudFront",
+    "takeover_risks": []
+  },
+  "bugbountytest-rjw5.atlassian.net": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "AtlassianEdge",
+      "via": "1.1 7c47873958412986e58bd33ceab774ec.cloudfront.net (CloudFront)"
+    },
+    "http_status": 404,
+    "open_ports": [],
+    "server_header": "AtlassianEdge",
+    "takeover_risks": []
+  },
+  "cloudflare-test.atlassian.net": {
+    "cors_issues": [],
+    "fingerprints": {},
+    "open_ports": [],
+    "takeover_risks": []
+  },
+  "cloudfront-test.atlassian.net": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "AtlassianEdge",
+      "via": "1.1 339d21a7c522b99d932998426853138a.cloudfront.net (CloudFront)"
+    },
+    "http_status": 404,
+    "open_ports": [],
+    "server_header": "AtlassianEdge",
+    "takeover_risks": [
+      "Potential AWS CloudFront takeover"
+    ]
+  },
+  "teridion-test.atlassian.net": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "AtlassianEdge",
+      "via": "1.1 bc46d2d8cd60dd3b45be7d327328b8ee.cloudfront.net (CloudFront)"
+    },
+    "http_status": 404,
+    "open_ports": [],
+    "server_header": "AtlassianEdge",
+    "takeover_risks": []
+  }
+}

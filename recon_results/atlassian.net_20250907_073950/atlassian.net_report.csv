@@ -1,0 +1,7 @@
+subdomain,http_status,server_header,open_ports,cors_issues,fingerprints,takeover_risks
+323232323323232d.atlassian.net,404,AtlassianEdge,,,"{""server"":""AtlassianEdge"",""via"":""1.1 11dc6914a8e5eaad14ab3972522bb472.cloudfront.net (CloudFront)""}",
+atlassian.net,403,CloudFront,,,"{""server"":""CloudFront"",""via"":""1.1 9ee8b835a4cdf0b35993615e21a3b5f8.cloudfront.net (CloudFront)""}",
+bugbountytest-rjw5.atlassian.net,404,AtlassianEdge,,,"{""server"":""AtlassianEdge"",""via"":""1.1 7c47873958412986e58bd33ceab774ec.cloudfront.net (CloudFront)""}",
+cloudflare-test.atlassian.net,0,,,,,
+cloudfront-test.atlassian.net,404,AtlassianEdge,,,"{""via"":""1.1 339d21a7c522b99d932998426853138a.cloudfront.net (CloudFront)"",""server"":""AtlassianEdge""}",Potential AWS CloudFront takeover
+teridion-test.atlassian.net,404,AtlassianEdge,,,"{""server"":""AtlassianEdge"",""via"":""1.1 bc46d2d8cd60dd3b45be7d327328b8ee.cloudfront.net (CloudFront)""}",

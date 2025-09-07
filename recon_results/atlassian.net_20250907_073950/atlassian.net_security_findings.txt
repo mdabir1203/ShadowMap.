@@ -1,0 +1,5 @@
+Security Findings Summary for atlassian.net
+=============================================
+Total subdomains found: 6
+Subdomains with CORS issues: 0
+Potential takeover targets: 1

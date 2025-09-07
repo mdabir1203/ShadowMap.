@@ -1,0 +1,5 @@
+Security Findings Summary for example.com
+=============================================
+Total subdomains found: 1
+Subdomains with CORS issues: 0
+Potential takeover targets: 0
