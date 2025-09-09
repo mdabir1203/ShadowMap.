@@ -1,4 +1,5 @@
 # 🌑 ShadowMap.
+<img width="1024" height="1536" alt="20250909_2018_ShadowMap Logo Design_simple_compose_01k4qgw7v3e6ttp28pvckddh9y-min" src="https://github.com/user-attachments/assets/95d39e5e-d51c-4eb4-9053-2db1e1042410" />
 
 ⚡ **Hacker-grade reconnaissance at global scale.**  
 ShadowMap is a Rust-powered open-source framework for **subdomain enumeration, vulnerability detection, and attack surface mapping**.  
