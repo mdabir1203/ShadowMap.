@@ -1,0 +1,5 @@
+Security Findings Summary for canva.com
+=============================================
+Total subdomains found: 24
+Subdomains with CORS issues: 1
+Potential takeover targets: 0

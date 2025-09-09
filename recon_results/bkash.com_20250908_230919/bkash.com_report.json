@@ -1,0 +1,429 @@
+{
+  "account.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 404,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "autodiscover.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {},
+    "open_ports": [],
+    "takeover_risks": []
+  },
+  "bgate.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "bk-qep.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {},
+    "open_ports": [],
+    "takeover_risks": []
+  },
+  "bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "blockbuster.movies.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "awselb/2.0"
+    },
+    "http_status": 503,
+    "open_ports": [],
+    "server_header": "awselb/2.0",
+    "takeover_risks": []
+  },
+  "blockbuster.uatmovies.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "awselb/2.0"
+    },
+    "http_status": 503,
+    "open_ports": [],
+    "server_header": "awselb/2.0",
+    "takeover_risks": []
+  },
+  "business.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "awselb/2.0"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "awselb/2.0",
+    "takeover_risks": []
+  },
+  "card.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "awselb/2.0"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "awselb/2.0",
+    "takeover_risks": []
+  },
+  "ccbp-cblamex.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {},
+    "open_ports": [],
+    "takeover_risks": []
+  },
+  "directcharge.payment.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "AmazonS3",
+      "via": "1.1 eb61a6f62d9d06e0967f2c75dc218372.cloudfront.net (CloudFront)"
+    },
+    "http_status": 200,
+    "open_ports": [],
+    "server_header": "AmazonS3",
+    "takeover_risks": []
+  },
+  "disbursement.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 200,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "exoos.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {},
+    "open_ports": [],
+    "takeover_risks": []
+  },
+  "fold.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "framework": "angular",
+      "x-request-id": "7b3b4d21-feec-4c82-a33d-717504310d5e"
+    },
+    "http_status": 200,
+    "open_ports": [],
+    "server_header": null,
+    "takeover_risks": []
+  },
+  "geo.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "framework": "react",
+      "server": "cloudflare"
+    },
+    "http_status": 200,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "gw.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {},
+    "open_ports": [],
+    "takeover_risks": []
+  },
+  "im.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {},
+    "open_ports": [],
+    "takeover_risks": []
+  },
+  "livechat.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "lyncdiscover.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 530,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "mail.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {},
+    "open_ports": [],
+    "takeover_risks": []
+  },
+  "merchantportal.bkash.com": {
+    "cors_issues": [
+      "Wildcard CORS allowed",
+      "Wildcard CORS allowed",
+      "Wildcard CORS allowed",
+      "Wildcard CORS allowed"
+    ],
+    "fingerprints": {
+      "server": "AmazonS3",
+      "via": "1.1 8c94305293b8d7f93f97ee3086e82daa.cloudfront.net (CloudFront)"
+    },
+    "http_status": 200,
+    "open_ports": [],
+    "server_header": "AmazonS3",
+    "takeover_risks": []
+  },
+  "mta-sts.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "AmazonS3",
+      "via": "1.1 ed56247dd32d1f3f77d72a82c840f500.cloudfront.net (CloudFront)"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "AmazonS3",
+    "takeover_risks": []
+  },
+  "partner.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 404,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "partnerportal.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "awselb/2.0"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "awselb/2.0",
+    "takeover_risks": []
+  },
+  "pay.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "payment.bkash.com": {
+    "cors_issues": [
+      "Wildcard CORS allowed",
+      "Wildcard CORS allowed",
+      "Wildcard CORS allowed",
+      "Wildcard CORS allowed"
+    ],
+    "fingerprints": {
+      "server": "AmazonS3",
+      "via": "1.1 dd24612b0e0b0177708a737d8ace576e.cloudfront.net (CloudFront)"
+    },
+    "http_status": 200,
+    "open_ports": [],
+    "server_header": "AmazonS3",
+    "takeover_risks": []
+  },
+  "paymentoffer.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {},
+    "open_ports": [],
+    "takeover_risks": []
+  },
+  "pgw-integration.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {},
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "CloudFront",
+    "takeover_risks": []
+  },
+  "ref.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "framework": "laravel",
+      "server": "cloudflare"
+    },
+    "http_status": 200,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "rms.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 200,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "sandboxdc.payment.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "AmazonS3",
+      "via": "1.1 ab18d80411d418596fdc7a546bbd23fc.cloudfront.net (CloudFront)"
+    },
+    "http_status": 200,
+    "open_ports": [],
+    "server_header": "AmazonS3",
+    "takeover_risks": []
+  },
+  "shop.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "awselb/2.0"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "awselb/2.0",
+    "takeover_risks": []
+  },
+  "sip.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 530,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "support.pgw-int.bkash.com": {
+    "cors_issues": [
+      "Wildcard CORS allowed",
+      "Wildcard CORS allowed",
+      "Wildcard CORS allowed",
+      "Wildcard CORS allowed"
+    ],
+    "fingerprints": {
+      "server": "AmazonS3",
+      "via": "1.1 e1f2e5fc501eb28c0ba03ec8fd956fba.cloudfront.net (CloudFront)"
+    },
+    "http_status": 200,
+    "open_ports": [],
+    "server_header": "AmazonS3",
+    "takeover_risks": []
+  },
+  "uat-ccbp-cblamex.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {},
+    "open_ports": [],
+    "takeover_risks": []
+  },
+  "uatbusiness.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "awselb/2.0"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "awselb/2.0",
+    "takeover_risks": []
+  },
+  "uatcard.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {},
+    "http_status": 404,
+    "open_ports": [],
+    "server_header": null,
+    "takeover_risks": []
+  },
+  "uatdc.payment.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "AmazonS3",
+      "via": "1.1 e86c3287faa5ab0f2ebe33f3b1486ca8.cloudfront.net (CloudFront)"
+    },
+    "http_status": 200,
+    "open_ports": [],
+    "server_header": "AmazonS3",
+    "takeover_risks": []
+  },
+  "uatgeo.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "awselb/2.0"
+    },
+    "http_status": 503,
+    "open_ports": [],
+    "server_header": "awselb/2.0",
+    "takeover_risks": []
+  },
+  "uatmerchantportal.bkash.com": {
+    "cors_issues": [
+      "Wildcard CORS allowed",
+      "Wildcard CORS allowed",
+      "Wildcard CORS allowed",
+      "Wildcard CORS allowed"
+    ],
+    "fingerprints": {
+      "server": "AmazonS3",
+      "via": "1.1 2292be0f38a3235417f498559c101624.cloudfront.net (CloudFront)"
+    },
+    "http_status": 200,
+    "open_ports": [],
+    "server_header": "AmazonS3",
+    "takeover_risks": []
+  },
+  "uatpartnerportal.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "awselb/2.0"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "awselb/2.0",
+    "takeover_risks": []
+  },
+  "uatshop.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "awselb/2.0"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "awselb/2.0",
+    "takeover_risks": []
+  },
+  "visacard.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "awselb/2.0"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "awselb/2.0",
+    "takeover_risks": []
+  },
+  "webmail.bkash.com": {
+    "cors_issues": [],
+    "fingerprints": {},
+    "open_ports": [],
+    "takeover_risks": []
+  }
+}

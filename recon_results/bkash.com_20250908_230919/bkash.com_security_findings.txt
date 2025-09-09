@@ -1,0 +1,5 @@
+Security Findings Summary for bkash.com
+=============================================
+Total subdomains found: 44
+Subdomains with CORS issues: 4
+Potential takeover targets: 0

@@ -1,0 +1,244 @@
+{
+  "api.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare",
+      "x-request-id": "97c09078498db258"
+    },
+    "http_status": 404,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "b2bevents.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 200,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "button-demo.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "canva.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "capi.cse.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {},
+    "open_ports": [],
+    "takeover_risks": []
+  },
+  "create-stg.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 200,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "create.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 200,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "creator.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "via": "1.1 google"
+    },
+    "http_status": 404,
+    "open_ports": [],
+    "server_header": null,
+    "takeover_risks": []
+  },
+  "ct.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "via": "1.1 google"
+    },
+    "http_status": 400,
+    "open_ports": [],
+    "server_header": null,
+    "takeover_risks": []
+  },
+  "docs.developer.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 200,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "events.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare",
+      "via": "1.1 varnish, 1.1 varnish"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "go.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "go.edu.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "l.create.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "l.engage.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "l.support.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "link.recruitment.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {},
+    "http_status": 404,
+    "open_ports": [],
+    "server_header": null,
+    "takeover_risks": []
+  },
+  "movable-ink.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "via": "1.1 95a64b916cc7062be796d476a3fd8d74.cloudfront.net (CloudFront)"
+    },
+    "http_status": 200,
+    "open_ports": [],
+    "server_header": null,
+    "takeover_risks": []
+  },
+  "partner.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "via": "1.1 google"
+    },
+    "http_status": 404,
+    "open_ports": [],
+    "server_header": null,
+    "takeover_risks": []
+  },
+  "resources.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "sfdcedge",
+      "x-request-id": "507ba11913056f8b613d83a4f5d1345f"
+    },
+    "http_status": 200,
+    "open_ports": [],
+    "server_header": "sfdcedge",
+    "takeover_risks": []
+  },
+  "sales.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {},
+    "http_status": 204,
+    "open_ports": [],
+    "server_header": null,
+    "takeover_risks": []
+  },
+  "support.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 403,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "telemetry.canva.com": {
+    "cors_issues": [],
+    "fingerprints": {
+      "server": "cloudflare"
+    },
+    "http_status": 404,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  },
+  "tracking.canva.com": {
+    "cors_issues": [
+      "Wildcard CORS allowed",
+      "Wildcard CORS allowed",
+      "Wildcard CORS allowed",
+      "Wildcard CORS allowed"
+    ],
+    "fingerprints": {
+      "framework": "react",
+      "server": "cloudflare",
+      "via": "1.1 google"
+    },
+    "http_status": 200,
+    "open_ports": [],
+    "server_header": "cloudflare",
+    "takeover_risks": []
+  }
+}
