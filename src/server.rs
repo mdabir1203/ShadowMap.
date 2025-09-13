@@ -6,6 +6,7 @@ use std::{
     sync::{Arc, Mutex},
 };
 use tokio::io::{AsyncRead, AsyncReadExt, AsyncWriteExt};
+
 use tokio::net::{TcpListener, TcpStream};
 
 #[derive(Clone)]
@@ -145,7 +146,6 @@ async fn handle_connection(mut stream: TcpStream, state: Arc<AppState>) {
             return;
         }
     };
-
     match (request.method.as_str(), request.path.as_str()) {
         ("POST", "/jobs") => {
             let req: JobRequest = match serde_json::from_str(&request.body) {

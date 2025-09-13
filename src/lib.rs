@@ -206,6 +206,7 @@ pub async fn run(args: Args) -> Result<String, Box<dyn std::error::Error + Send 
 // Create a secure DNS resolver
 async fn create_secure_resolver(
 ) -> Result<TokioAsyncResolver, Box<dyn std::error::Error + Send + Sync>> {
+
     let mut config = ResolverConfig::default();
     config.add_name_server(NameServerConfig {
         socket_addr: "8.8.8.8:53".parse()?,
@@ -229,6 +230,7 @@ async fn crtsh_enum_async(
     let url = format!("https://crt.sh/?q=%25.{}&output=json", domain);
     let mut retries = 0;
     let mut last_error: Option<Box<dyn std::error::Error + Send + Sync>> = None;
+
 
     while retries < max_retries {
         let resp = client
@@ -792,6 +794,7 @@ fn write_outputs(
     output_dir: &str,
     domain: &str,
 ) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+
     use itertools::Itertools;
 
     // TXT - Subdomains

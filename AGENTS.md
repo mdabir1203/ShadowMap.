@@ -5,6 +5,8 @@
 - Check the name field in each crate's Cargo.toml to confirm the right crate name—workspace root names don't matter for imports.
 - Install `cargo watch -x "clippy --fix --allow-dirty" -x test -x run` for continuous feedback during development.
 - Add `alias cr='cargo run'` and `alias ct='cargo test'` to your shell for faster iteration.
+- Install sccache with cargo install sccache and set export RUSTC_WRAPPER=$(which sccache) to cache compiled objects locally (and remotely if configured).
+- Install mold (sudo apt install mold) and set export RUSTFLAGS="-C link-arg=-fuse-ld=mold" for much faster linking; fall back to lld if mold isn’t available.
 
 ## Testing instructions
 - Find the CI plan in the .github/workflows folder to understand what checks run on your code.
@@ -37,3 +39,19 @@
 - Include benchmark results if you're claiming performance improvements: `cargo bench` output in PR description.
 - For breaking changes, update CHANGELOG.md and bump version numbers according to semver.
 - Add integration tests for new public APIs, not just unit tests—they catch more real-world issues.
+
+## Max Dev Speed Tricks
+- Cache everything: sccache local+remote.
+- Link instantly: mold > lld > ld.
+- Check only the crate you touched: cargo check -p <crate_name>.
+- Use cargo check (type checking) way more than cargo build (linking).
+- Set CARGO_TARGET_DIR=/tmp/rust-target for global dependency reuse across projects.
+- Keep heavy crates gated under features; disable during iteration with cargo check --no-default-features -p <crate>.
+- Find version duplication: cargo tree --workspace --duplicates.
+- See stale deps: cargo outdated.
+- Enforce licenses/security with cargo deny check.
+- Cut wasted deps: cargo machete.
+- For breaking changes: bump semver + update CHANGELOG.md.
+- New public APIs → must have integration tests. Unit tests alone don’t cut it.
+- Don’t waste API calls: Use mocks/stubs/sandboxes locally. CI runs live API tests at lower frequency.
+- Fast feedback > Elegant excuses. Iterate in seconds, not minutes.
