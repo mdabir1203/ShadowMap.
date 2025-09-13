@@ -5,7 +5,8 @@ use std::{
     collections::HashMap,
     sync::{Arc, Mutex},
 };
-use tokio::io::{AsyncReadExt, AsyncWriteExt};
+use tokio::io::{AsyncRead, AsyncReadExt, AsyncWriteExt};
+
 use tokio::net::{TcpListener, TcpStream};
 
 #[derive(Clone)]
@@ -52,34 +53,79 @@ async fn write_not_found(stream: &mut TcpStream) {
         .await;
 }
 
-async fn handle_connection(mut stream: TcpStream, state: Arc<AppState>) {
-    let mut buf = Vec::new();
-    if stream.read_to_end(&mut buf).await.is_err() {
-        return;
-    }
+struct Request {
+    method: String,
+    path: String,
+    headers: HashMap<String, String>,
+    body: String,
+}
 
-    let request = String::from_utf8_lossy(&buf);
-    let mut lines = request.lines();
-    let request_line = match lines.next() {
-        Some(l) => l,
+async fn read_request<R: AsyncRead + Unpin>(stream: &mut R) -> Option<Request> {
+    let mut buf = Vec::new();
+    loop {
+        let mut temp = [0u8; 1024];
+        let n = stream.read(&mut temp).await.ok()?;
+        if n == 0 {
+            return None;
+        }
+        buf.extend_from_slice(&temp[..n]);
+        if let Some(pos) = buf.windows(4).position(|w| w == b"\r\n\r\n") {
+            let header_end = pos + 4;
+            let header_slice = &buf[..header_end];
+            let mut headers = [httparse::EMPTY_HEADER; 32];
+            let mut req = httparse::Request::new(&mut headers);
+            if req.parse(header_slice).ok()? != httparse::Status::Complete(header_end) {
+                return None;
+            }
+            let content_length = req
+                .headers
+                .iter()
+                .find(|h| h.name.eq_ignore_ascii_case("Content-Length"))
+                .and_then(|h| std::str::from_utf8(h.value).ok()?.parse::<usize>().ok())
+                .unwrap_or(0);
+            let method = req.method.unwrap_or("").to_string();
+            let path = req.path.unwrap_or("").to_string();
+            let headers_map: HashMap<_, _> = req
+                .headers
+                .iter()
+                .map(|h| {
+                    (
+                        h.name.to_string(),
+                        String::from_utf8_lossy(h.value).to_string(),
+                    )
+                })
+                .collect();
+            let mut body = buf[header_end..].to_vec();
+            while body.len() < content_length {
+                let mut temp = vec![0; content_length - body.len()];
+                let n = stream.read(&mut temp).await.ok()?;
+                if n == 0 {
+                    return None;
+                }
+                body.extend_from_slice(&temp[..n]);
+            }
+            return Some(Request {
+                method,
+                path,
+                headers: headers_map,
+                body: String::from_utf8_lossy(&body).to_string(),
+            });
+        }
+    }
+}
+
+async fn handle_connection(mut stream: TcpStream, state: Arc<AppState>) {
+    let request = match read_request(&mut stream).await {
+        Some(r) => r,
         None => return,
     };
-    let mut parts = request_line.split_whitespace();
-    let method = parts.next().unwrap_or("");
-    let path = parts.next().unwrap_or("");
 
     // Extract token
-    let mut token = None;
-    for line in &mut lines {
-        if line.is_empty() {
-            break;
-        }
-        if let Some(value) = line.strip_prefix("Authorization: ") {
-            if let Some(t) = value.strip_prefix("Bearer ") {
-                token = Some(t.trim().to_string());
-            }
-        }
-    }
+    let token = request
+        .headers
+        .get("Authorization")
+        .and_then(|v| v.strip_prefix("Bearer "))
+        .map(|s| s.trim().to_string());
 
     let token = match token {
         Some(t) => t,
@@ -100,12 +146,9 @@ async fn handle_connection(mut stream: TcpStream, state: Arc<AppState>) {
             return;
         }
     };
-
-    match (method, path) {
+    match (request.method.as_str(), request.path.as_str()) {
         ("POST", "/jobs") => {
-            // Body is after headers separated by empty line
-            let body = request.split("\r\n\r\n").nth(1).unwrap_or("");
-            let req: JobRequest = match serde_json::from_str(body) {
+            let req: JobRequest = match serde_json::from_str(&request.body) {
                 Ok(b) => b,
                 Err(_) => {
                     write_not_found(&mut stream).await;
@@ -215,5 +258,23 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         let (socket, _) = listener.accept().await?;
         let state_clone = state.clone();
         handle_connection(socket, state_clone).await;
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::io::Cursor;
+    use tokio::io::BufReader;
+
+    #[tokio::test]
+    async fn parses_request() {
+        let raw = b"POST /jobs HTTP/1.1\r\nContent-Length: 18\r\nAuthorization: Bearer t\r\n\r\n{\"domain\":\"a.com\"}";
+        let mut cursor = BufReader::new(Cursor::new(raw.as_ref()));
+        let req = read_request(&mut cursor).await.expect("parse");
+        assert_eq!(req.method, "POST");
+        assert_eq!(req.path, "/jobs");
+        assert_eq!(req.headers.get("Authorization").unwrap(), "Bearer t");
+        assert_eq!(req.body, "{\"domain\":\"a.com\"}");
     }
 }
