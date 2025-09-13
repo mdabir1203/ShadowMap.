@@ -70,5 +70,6 @@ fn main() -> eframe::Result<()> {
         "ShadowMap",
         options,
         Box::new(|_cc| Ok(Box::new(App::default()))),
+
     )
 }
