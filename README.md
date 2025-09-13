@@ -33,14 +33,20 @@ ShadowMap is a Rust-powered open-source framework for **subdomain enumeration, v
 - Rust (>=1.70)  
 - Cargo package manager  
 
-### Build  
+### Build
 ```bash
 git clone https://github.com/YOUR-ORG/ShadowMap.git
 cd ShadowMap
 cargo build --release
 Run
 ./target/release/shadowmap -d volkswagen.de -o results.csv
-````
+```
+
+### Lint
+
+```bash
+cargo clippy -- -D warnings
+```
 
 🎯 Usage Examples
 Enumerate & Analyze Subdomains

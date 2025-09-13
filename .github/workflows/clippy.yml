@@ -1,0 +1,24 @@
+name: Clippy
+
+on:
+  push:
+    paths:
+      - '**/*.rs'
+      - Cargo.toml
+      - Cargo.lock
+  pull_request:
+    paths:
+      - '**/*.rs'
+      - Cargo.toml
+      - Cargo.lock
+
+jobs:
+  clippy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - name: Run clippy
+        run: cargo clippy -- -D warnings
