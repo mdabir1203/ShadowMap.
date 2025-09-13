@@ -48,6 +48,15 @@ Run
 cargo clippy -- -D warnings
 ```
 
+### Desktop GUI (eframe)
+
+1. Launch the native window:
+   ```bash
+   cargo run --features gui --bin shadowmap-gui
+   ```
+2. Enter a domain and press **Run Scan** to execute the built-in recon logic. The output directory will be displayed once the scan completes.
+3. The GUI is built with [`eframe`](https://docs.rs/eframe/latest/eframe/), keeping the codebase purely in Rust for easier maintenance.
+
 🎯 Usage Examples
 Enumerate & Analyze Subdomains
 ```bash

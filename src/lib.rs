@@ -128,4 +128,3 @@ pub async fn run(args: Args) -> Result<String, Box<dyn std::error::Error + Send 
     println!("[*] Recon complete. Outputs in: {}", output_dir);
     Ok(output_dir)
 }
-

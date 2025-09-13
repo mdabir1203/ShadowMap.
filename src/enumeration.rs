@@ -16,10 +16,10 @@ pub async fn crtsh_enum_async(
     client: &Client,
     domain: &str,
     max_retries: usize,
-) -> Result<HashSet<String>, Box<dyn std::error::Error>> {
+) -> Result<HashSet<String>, Box<dyn std::error::Error + Send + Sync>> {
     let url = format!("https://crt.sh/?q=%25.{}&output=json", domain);
     let mut retries = 0;
-    let mut last_error: Option<Box<dyn std::error::Error>> = None;
+    let mut last_error: Option<Box<dyn std::error::Error + Send + Sync>> = None;
 
     while retries < max_retries {
         let resp = client

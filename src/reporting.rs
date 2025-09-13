@@ -19,7 +19,7 @@ pub fn write_outputs(
     maps: ReconMaps<'_>,
     output_dir: &str,
     domain: &str,
-) -> Result<(), Box<dyn std::error::Error>> {
+) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     let txt_file = format!("{}/{}_subdomains.txt", output_dir, domain);
     let mut file = File::create(&txt_file)?;
     for sub in subs.iter().sorted() {

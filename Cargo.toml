@@ -64,8 +64,15 @@ once_cell = "1.21.3"
 papaya = "0.2.3"
 httparse = "1.8"
 
+# Desktop GUI
+eframe = { version = "0.32", optional = true }
+
 [dev-dependencies]
 tokio-test = "0.4"
+
+[features]
+default = []
+gui = ["eframe"]
 
 [profile.release]
 opt-level = 3
@@ -77,3 +84,8 @@ strip = true
 [[bin]]
 name = "shadowmap-server"
 path = "src/server.rs"
+
+[[bin]]
+name = "shadowmap-gui"
+path = "src/gui.rs"
+required-features = ["gui"]
