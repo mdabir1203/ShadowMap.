@@ -27,12 +27,17 @@ use fingerprint::fingerprint_software;
 use headers::check_headers_tls;
 use ports::scan_ports;
 use reporting::{write_outputs, ReconMaps};
+use std::path::Path;
 use takeover::check_subdomain_takeover;
 
-pub async fn run(args: Args) -> Result<String, Box<dyn std::error::Error + Send + Sync>> {
+pub async fn run(args: Args) -> Result<String, Box<dyn std::error::Error>> {
+
     let timestamp = Local::now().format("%Y%m%d_%H%M%S").to_string();
-    let output_dir = format!("recon_results/{}_{}", args.domain, timestamp);
+    let output_dir = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("recon_results")
+        .join(format!("{}_{}", args.domain, timestamp));
     std::fs::create_dir_all(&output_dir)?;
+    let output_dir = output_dir.to_string_lossy().to_string();
 
     println!("[*] Starting security-enhanced recon for *.{}", args.domain);
     println!("[*] Configuration:");
@@ -128,4 +133,3 @@ pub async fn run(args: Args) -> Result<String, Box<dyn std::error::Error + Send 
     println!("[*] Recon complete. Outputs in: {}", output_dir);
     Ok(output_dir)
 }
-
