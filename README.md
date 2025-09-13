@@ -23,23 +23,7 @@ ShadowMap is a Rust-powered open-source framework for **subdomain enumeration, v
 
 ## 🔄 Workflow
 
-```mermaid
-flowchart TD
-    A[Start] --> B[Parse CLI args]
-    B --> C[Create output directory]
-    C --> D[Build HTTP client]
-    D --> E[Enumerate subdomains via crt.sh]
-    E --> F[Validate & normalize domains]
-    F --> G[DNS resolution]
-    G --> H[Port scan]
-    H --> I[Header & TLS check]
-    I --> J[CORS misconfiguration check]
-    J --> K[Software fingerprinting]
-    K --> L[Cloud/SaaS recon]
-    L --> M[Subdomain takeover detection]
-    M --> N[Generate reports]
-    N --> O[End]
-```
+  <img width="406" height="1376" alt="Unbenannt-2025-09-13-0737" src="https://github.com/user-attachments/assets/365ccf19-2529-45e1-b330-db3ab8dd7031" />
 
 ---
 
