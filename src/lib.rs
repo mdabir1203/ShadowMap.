@@ -22,19 +22,19 @@ use trust_dns_resolver::{config::*, TokioAsyncResolver};
 pub struct Args {
     /// Target domain to perform subdomain enumeration on
     #[arg(short, long, default_value = "example.com")]
-    domain: String,
+    pub domain: String,
 
     /// Maximum number of concurrent connections
     #[arg(short, long, default_value = "50")]
-    concurrency: usize,
+    pub concurrency: usize,
 
     /// Request timeout in seconds
     #[arg(short, long, default_value = "10")]
-    timeout: u64,
+    pub timeout: u64,
 
     /// Number of retries for failed requests
     #[arg(short, long, default_value = "3")]
-    retries: usize,
+    pub retries: usize,
 }
 
 #[derive(Debug, Deserialize)]
