@@ -19,7 +19,27 @@ ShadowMap is a Rust-powered open-source framework for **subdomain enumeration, v
   - Software fingerprinting (frameworks, servers, CDNs)  
   - Subdomain takeover detection (AWS S3, Azure, CloudFront, GitHub Pages, etc.)  
 - 📊 **Export Formats** → CSV, JSON, TXT (ready for pipelines or reporting)  
-- 🛡 **False Positive Reduction** → heuristic checks + fallback validation  
+- 🛡 **False Positive Reduction** → heuristic checks + fallback validation
+
+## 🔄 Workflow
+
+```mermaid
+flowchart TD
+    A[Start] --> B[Parse CLI args]
+    B --> C[Create output directory]
+    C --> D[Build HTTP client]
+    D --> E[Enumerate subdomains via crt.sh]
+    E --> F[Validate & normalize domains]
+    F --> G[DNS resolution]
+    G --> H[Port scan]
+    H --> I[Header & TLS check]
+    I --> J[CORS misconfiguration check]
+    J --> K[Software fingerprinting]
+    K --> L[Cloud/SaaS recon]
+    L --> M[Subdomain takeover detection]
+    M --> N[Generate reports]
+    N --> O[End]
+```
 
 ---
 
@@ -29,14 +49,20 @@ ShadowMap is a Rust-powered open-source framework for **subdomain enumeration, v
 - Rust (>=1.70)  
 - Cargo package manager  
 
-### Build  
+### Build
 ```bash
 git clone https://github.com/YOUR-ORG/ShadowMap.git
 cd ShadowMap
 cargo build --release
 Run
 ./target/release/shadowmap -d volkswagen.de -o results.csv
-````
+```
+
+### Lint
+
+```bash
+cargo clippy -- -D warnings
+```
 
 🎯 Usage Examples
 Enumerate & Analyze Subdomains

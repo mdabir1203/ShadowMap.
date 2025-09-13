@@ -15,8 +15,6 @@ use once_cell::sync::Lazy;
 use tokio::net::TcpStream;
 use std::sync::Arc;
 use tokio::sync::Semaphore;
-use std::net::SocketAddr;
-use itertools::Itertools;
 use clap::Parser;
 
 #[derive(Parser, Debug)]
@@ -42,13 +40,7 @@ struct Args {
 #[derive(Debug, Deserialize)]
 struct CrtShEntry {
     name_value: String,
-    // Add more fields for better error handling
-    not_before: Option<String>,
-    not_after: Option<String>,
 }
-
-const RETRIES: usize = 3;
-const MAX_CONCURRENCY: usize = 35;
 const COMMON_PORTS: &[u16] = &[21,22,25,80,443,3306,8080,8443,3389,5432,27017,9200,9300];
 const DNS_TIMEOUT: Duration = Duration::from_secs(5);
 
@@ -168,12 +160,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // 9️⃣ Enhanced Reporting
     write_outputs(
         &live_subs,
-        &header_map,
-        &open_ports_map,
-        &cors_map,
-        &software_map,
-        &takeover_map,
-        &cloud_saas_map,
+        ReconMaps {
+            header_map: &header_map,
+            open_ports_map: &open_ports_map,
+            cors_map: &cors_map,
+            software_map: &software_map,
+            takeover_map: &takeover_map,
+            cloud_saas_map: &cloud_saas_map,
+        },
         &output_dir,
         &args.domain,
     )?;
@@ -232,7 +226,7 @@ async fn crtsh_enum_async(client: &Client, domain: &str, max_retries: usize) -> 
                         }
                     }
                 } else if r.status().is_server_error() {
-                    last_error = Some(Box::new(std::io::Error::new(std::io::ErrorKind::Other, format!("Server error: {}", r.status()))));
+                    last_error = Some(Box::new(std::io::Error::other(format!("Server error: {}", r.status()))));
                 }
             },
             Err(e) => {
@@ -248,7 +242,7 @@ async fn crtsh_enum_async(client: &Client, domain: &str, max_retries: usize) -> 
         }
     }
     
-    Err(last_error.unwrap_or_else(|| Box::new(std::io::Error::new(std::io::ErrorKind::Other, "Max retries exceeded"))))
+    Err(last_error.unwrap_or_else(|| Box::new(std::io::Error::other("Max retries exceeded"))))
 }
 
 // ---------------- Cloud Recon ------------------- //
@@ -334,7 +328,7 @@ async fn check_dns_live(subs: &HashSet<String>, resolver: TokioAsyncResolver, ma
             drop(permit);
             
             match result {
-                Ok(Ok(lookup)) if !lookup.iter().next().is_none() => Some(sub_clone),
+                Ok(Ok(lookup)) if lookup.iter().next().is_some() => Some(sub_clone),
                 _ => None,
             }
         }));
@@ -362,7 +356,6 @@ async fn scan_ports(subs: &HashSet<String>, max_concurrency: usize) -> HashMap<S
             let sub_clone = sub.clone();
             
             tasks.push(tokio::spawn(async move {
-                let addr = format!("{}:{}", sub_clone, port);
                 let scan_result = timeout(
                     Duration::from_secs(2),
                     TcpStream::connect((sub_clone.as_str(), port))
@@ -500,23 +493,25 @@ async fn check_cors(client: &Client, subs: &HashSet<String>, max_concurrency: us
                 let mut issues = Vec::new();
 
                 // Initial misconfig detection
-                if let Ok(resp) = timeout(
+                if let Some(resp) = timeout(
                     Duration::from_secs(timeout_secs),
                     client.get(&url).header("Origin", origin_clone.clone()).send()
-                ).await {
-                    if let Ok(resp) = resp {
-                        if let Some(ao) = resp.headers().get("access-control-allow-origin") {
-                            if let Ok(ao_str) = ao.to_str() {
-                                if ao_str == "*" {
-                                    issues.push("Wildcard CORS allowed".to_string());
-                                } else if ao_str == origin_clone {
-                                    issues.push(format!("Reflects origin: {}", origin_clone));
-                                }
+                )
+                .await
+                .ok()
+                .and_then(|r| r.ok())
+                {
+                    if let Some(ao) = resp.headers().get("access-control-allow-origin") {
+                        if let Ok(ao_str) = ao.to_str() {
+                            if ao_str == "*" {
+                                issues.push("Wildcard CORS allowed".to_string());
+                            } else if ao_str == origin_clone {
+                                issues.push(format!("Reflects origin: {}", origin_clone));
+                            }
 
-                                if let Some(acac) = resp.headers().get("access-control-allow-credentials") {
-                                    if acac == "true" {
-                                        issues.push("Allow-Credentials: true".to_string());
-                                    }
+                            if let Some(acac) = resp.headers().get("access-control-allow-credentials") {
+                                if acac == "true" {
+                                    issues.push("Allow-Credentials: true".to_string());
                                 }
                             }
                         }
@@ -606,48 +601,52 @@ async fn fingerprint_software(client: &Client, subs: &HashSet<String>, max_concu
             let url = format!("https://{}", sub_clone);
             let mut fingerprints = HashMap::new();
             
-            if let Ok(resp) = timeout(
-                Duration::from_secs(timeout_secs), 
+            if let Some(resp) = timeout(
+                Duration::from_secs(timeout_secs),
                 client.get(&url).send()
-            ).await {
-                if let Ok(resp) = resp {
-                    // Check common headers for fingerprinting
-                    let headers_to_check = vec![
-                        "server", "x-powered-by", "x-aspnet-version", 
-                        "x-request-id", "via", "x-backend-server"
-                    ];
-                    
-                    for header_name in headers_to_check {
-                        if let Some(value) = resp.headers().get(header_name) {
-                            if let Ok(value_str) = value.to_str() {
-                                fingerprints.insert(header_name.to_string(), value_str.to_string());
-                            }
+            )
+            .await
+            .ok()
+            .and_then(|r| r.ok())
+            {
+                // Check common headers for fingerprinting
+                let headers_to_check = vec![
+                    "server", "x-powered-by", "x-aspnet-version",
+                    "x-request-id", "via", "x-backend-server"
+                ];
+
+                for header_name in headers_to_check {
+                    if let Some(value) = resp.headers().get(header_name) {
+                        if let Ok(value_str) = value.to_str() {
+                            fingerprints.insert(header_name.to_string(), value_str.to_string());
                         }
                     }
-                    
-                    // Check for common framework patterns in body
-                    if let Ok(body) = timeout(
-                        Duration::from_secs(5),
-                        resp.text()
-                    ).await {
-                        if let Ok(body_text) = body {
-                            let body_lower = body_text.to_lowercase();
-                            let tech_indicators = vec![
-                                ("wordpress", "wp-content"),
-                                ("drupal", "drupal"),
-                                ("joomla", "joomla"),
-                                ("react", "react"),
-                                ("angular", "angular"),
-                                ("vue", "vue.js"),
-                                ("laravel", "laravel"),
-                            ];
-                            
-                            for (tech, indicator) in tech_indicators {
-                                if body_lower.contains(indicator) {
-                                    fingerprints.insert("framework".to_string(), tech.to_string());
-                                    break;
-                                }
-                            }
+                }
+
+                // Check for common framework patterns in body
+                if let Some(body_text) = timeout(
+                    Duration::from_secs(5),
+                    resp.text()
+                )
+                .await
+                .ok()
+                .and_then(|r| r.ok())
+                {
+                    let body_lower = body_text.to_lowercase();
+                    let tech_indicators = vec![
+                        ("wordpress", "wp-content"),
+                        ("drupal", "drupal"),
+                        ("joomla", "joomla"),
+                        ("react", "react"),
+                        ("angular", "angular"),
+                        ("vue", "vue.js"),
+                        ("laravel", "laravel"),
+                    ];
+
+                    for (tech, indicator) in tech_indicators {
+                        if body_lower.contains(indicator) {
+                            fingerprints.insert("framework".to_string(), tech.to_string());
+                            break;
                         }
                     }
                 }
@@ -702,14 +701,18 @@ async fn check_subdomain_takeover(subs: &HashSet<String>) -> HashMap<String, Vec
 }
 
 // ---------- Enhanced Reporting ----------
+struct ReconMaps<'a> {
+    header_map: &'a HashMap<String, (u16, Option<String>)>,
+    open_ports_map: &'a HashMap<String, Vec<u16>>,
+    cors_map: &'a HashMap<String, Vec<String>>,
+    software_map: &'a HashMap<String, HashMap<String, String>>,
+    takeover_map: &'a HashMap<String, Vec<String>>,
+    cloud_saas_map: &'a HashMap<String, Vec<String>>,
+}
+
 fn write_outputs(
     subs: &HashSet<String>,
-    header_map: &HashMap<String, (u16, Option<String>)>,
-    open_ports_map: &HashMap<String, Vec<u16>>,
-    cors_map: &HashMap<String, Vec<String>>,
-    software_map: &HashMap<String, HashMap<String, String>>,
-    takeover_map: &HashMap<String, Vec<String>>,
-    cloud_saas_map: &HashMap<String, Vec<String>>,
+    maps: ReconMaps<'_>,
     output_dir: &str,
     domain: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
@@ -729,26 +732,26 @@ fn write_outputs(
     for sub in subs.iter().sorted() {
         let mut entry = serde_json::Map::new();
         
-        if let Some((status, server)) = header_map.get(sub) {
+        if let Some((status, server)) = maps.header_map.get(sub) {
             entry.insert("http_status".to_string(), serde_json::json!(status));
             entry.insert("server_header".to_string(), serde_json::json!(server));
         }
-        
-        entry.insert("open_ports".to_string(), 
-            serde_json::json!(open_ports_map.get(sub).cloned().unwrap_or_default()));
-        
-        entry.insert("cors_issues".to_string(), 
-            serde_json::json!(cors_map.get(sub).cloned().unwrap_or_default()));
-        
-        entry.insert("fingerprints".to_string(), 
-            serde_json::json!(software_map.get(sub).cloned().unwrap_or_default()));
-        
-        entry.insert("takeover_risks".to_string(), 
-            serde_json::json!(takeover_map.get(sub).cloned().unwrap_or_default()));
+
+        entry.insert("open_ports".to_string(),
+            serde_json::json!(maps.open_ports_map.get(sub).cloned().unwrap_or_default()));
+
+        entry.insert("cors_issues".to_string(),
+            serde_json::json!(maps.cors_map.get(sub).cloned().unwrap_or_default()));
+
+        entry.insert("fingerprints".to_string(),
+            serde_json::json!(maps.software_map.get(sub).cloned().unwrap_or_default()));
+
+        entry.insert("takeover_risks".to_string(),
+            serde_json::json!(maps.takeover_map.get(sub).cloned().unwrap_or_default()));
 
         // NEW: cloud/saas findings per sub
         entry.insert("cloud_saas".to_string(),
-            serde_json::json!(cloud_saas_map.get(sub).cloned().unwrap_or_default()));
+            serde_json::json!(maps.cloud_saas_map.get(sub).cloned().unwrap_or_default()));
     
         json_obj.insert(sub.clone(), serde_json::Value::Object(entry));
     }
@@ -758,22 +761,22 @@ fn write_outputs(
     // CSV - Summary report (include cloud_saas column)
     let csv_file = format!("{}/{}_report.csv", output_dir, domain);
     let mut wtr = Writer::from_path(&csv_file)?;
-    wtr.write_record(&[
-        "subdomain", "http_status", "server_header", "open_ports", 
+    wtr.write_record([
+        "subdomain", "http_status", "server_header", "open_ports",
         "cors_issues", "fingerprints", "takeover_risks", "cloud_saas"
     ])?;
     
     for sub in subs.iter().sorted() {
-        let (status, server) = header_map.get(sub).cloned().unwrap_or((0, None));
-        let ports = open_ports_map.get(sub).map_or("".to_string(), |v| 
+        let (status, server) = maps.header_map.get(sub).cloned().unwrap_or((0, None));
+        let ports = maps.open_ports_map.get(sub).map_or("".to_string(), |v|
             v.iter().map(|p| p.to_string()).join(","));
-        let cors = cors_map.get(sub).map_or("".to_string(), |v| v.join("; "));
-        let fingerprints = software_map.get(sub).map_or("".to_string(), |v| 
+        let cors = maps.cors_map.get(sub).map_or("".to_string(), |v| v.join("; "));
+        let fingerprints = maps.software_map.get(sub).map_or("".to_string(), |v|
             serde_json::to_string(v).unwrap_or_default());
-        let takeover = takeover_map.get(sub).map_or("".to_string(), |v| v.join("; "));
-        let cloud_saas = cloud_saas_map.get(sub).map_or("".to_string(), |v| v.join("; "));
-        
-        wtr.write_record(&[
+        let takeover = maps.takeover_map.get(sub).map_or("".to_string(), |v| v.join("; "));
+        let cloud_saas = maps.cloud_saas_map.get(sub).map_or("".to_string(), |v| v.join("; "));
+
+        wtr.write_record([
             sub,
             &status.to_string(),
             &server.unwrap_or_default(),
@@ -793,12 +796,12 @@ fn write_outputs(
     writeln!(findings, "Security Findings Summary for {}", domain)?;
     writeln!(findings, "=============================================")?;
     writeln!(findings, "Total subdomains found: {}", subs.len())?;
-    writeln!(findings, "Subdomains with CORS issues: {}", cors_map.len())?;
-    writeln!(findings, "Potential takeover targets: {}", takeover_map.len())?;
+    writeln!(findings, "Subdomains with CORS issues: {}", maps.cors_map.len())?;
+    writeln!(findings, "Potential takeover targets: {}", maps.takeover_map.len())?;
 
     // Extra: write cloud_saas_map to its own JSON
     let cloud_file = format!("{}/{}_cloud_saas.json", output_dir, domain);
-    std::fs::write(cloud_file, serde_json::to_string_pretty(&cloud_saas_map)?)?;
+    std::fs::write(cloud_file, serde_json::to_string_pretty(&maps.cloud_saas_map)?)?;
     
     Ok(())
 }
