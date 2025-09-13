@@ -8,7 +8,8 @@ use trust_dns_resolver::{config::*, TokioAsyncResolver};
 
 use crate::constants::DNS_TIMEOUT;
 
-pub async fn create_secure_resolver() -> Result<TokioAsyncResolver, Box<dyn std::error::Error>> {
+pub async fn create_secure_resolver(
+) -> Result<TokioAsyncResolver, Box<dyn std::error::Error + Send + Sync>> {
     let mut config = ResolverConfig::default();
     config.add_name_server(NameServerConfig {
         socket_addr: "8.8.8.8:53".parse()?,
