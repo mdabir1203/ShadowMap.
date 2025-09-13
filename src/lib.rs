@@ -31,6 +31,7 @@ use std::path::Path;
 use takeover::check_subdomain_takeover;
 
 pub async fn run(args: Args) -> Result<String, Box<dyn std::error::Error>> {
+
     let timestamp = Local::now().format("%Y%m%d_%H%M%S").to_string();
     let output_dir = Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("recon_results")
