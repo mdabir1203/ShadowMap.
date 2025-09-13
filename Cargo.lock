@@ -1949,6 +1949,7 @@ dependencies = [
  "csv",
  "dialoguer",
  "futures",
+ "httparse",
  "idna 1.1.0",
  "itertools 0.14.0",
  "lazy_static",
