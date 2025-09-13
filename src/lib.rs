@@ -92,7 +92,7 @@ static CLOUD_SAAS_PATTERNS: Lazy<Vec<(&'static str, Regex)>> = Lazy::new(|| {
     ]
 });
 
-pub async fn run(args: Args) -> Result<String, Box<dyn std::error::Error>> {
+pub async fn run(args: Args) -> Result<String, Box<dyn std::error::Error + Send + Sync>> {
     let timestamp = Local::now().format("%Y%m%d_%H%M%S").to_string();
     let output_dir = format!("recon_results/{}_{}", args.domain, timestamp);
     std::fs::create_dir_all(&output_dir)?;
@@ -204,7 +204,9 @@ pub async fn run(args: Args) -> Result<String, Box<dyn std::error::Error>> {
 }
 
 // Create a secure DNS resolver
-async fn create_secure_resolver() -> Result<TokioAsyncResolver, Box<dyn std::error::Error>> {
+async fn create_secure_resolver(
+) -> Result<TokioAsyncResolver, Box<dyn std::error::Error + Send + Sync>> {
+
     let mut config = ResolverConfig::default();
     config.add_name_server(NameServerConfig {
         socket_addr: "8.8.8.8:53".parse()?,
@@ -224,10 +226,11 @@ async fn crtsh_enum_async(
     client: &Client,
     domain: &str,
     max_retries: usize,
-) -> Result<HashSet<String>, Box<dyn std::error::Error>> {
+) -> Result<HashSet<String>, Box<dyn std::error::Error + Send + Sync>> {
     let url = format!("https://crt.sh/?q=%25.{}&output=json", domain);
     let mut retries = 0;
-    let mut last_error: Option<Box<dyn std::error::Error>> = None;
+    let mut last_error: Option<Box<dyn std::error::Error + Send + Sync>> = None;
+
 
     while retries < max_retries {
         let resp = client
@@ -790,7 +793,8 @@ fn write_outputs(
     maps: ReconMaps<'_>,
     output_dir: &str,
     domain: &str,
-) -> Result<(), Box<dyn std::error::Error>> {
+) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+
     use itertools::Itertools;
 
     // TXT - Subdomains
